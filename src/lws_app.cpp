@@ -636,7 +636,7 @@ namespace LWS
 
     int numCorners = numCells + 1;
 
-    double field[numCorners * numCorners * numCorners];
+    double* field = new double[numCorners * numCorners * numCorners];
 
     int nSlice = numCorners * numCorners;
     int nRow = numCorners;
@@ -655,6 +655,7 @@ namespace LWS
     }
 
     iso->GenerateSurface(field, 0, numCells, numCells, numCells, cellSize, cellSize, cellSize);
+    delete[] field;
 
     std::vector<glm::vec3> nodes;
     std::vector<std::array<size_t, 3>> triangles;
