@@ -8,20 +8,28 @@ class PolyCurveNetwork;
 class BVHNode3D;
 class BlockClusterTree;
 
+#if defined(_WIN32) || defined(__WIN32__)
+    // Windows (both 32 and 64 bit)
+    #define DLL_EXPORT __declspec(dllexport)
+#elif defined(__GNUC__) && __GNUC__ >= 4
+    // GCC 4.0 and newer
+    #define DLL_EXPORT __attribute__ ((visibility ("default")))
+#else
+    #define DLL_EXPORT
+#endif
+
 // Arguments:
 // positions - std::vector of size-3 arrays of doubles, each one containing the position of that vertex,
 // edges - std::vector of size-2 arrays of size_t, each one with a pair of indices indicating an edge.
 // Returns:
 // a pointer to a new PolyCurveNetwork object. 
-__attribute__ ((visibility ("default")))
-PolyCurveNetwork* createCurveNetwork(std::vector<std::array<double, 3>> &positions, std::vector<std::array<size_t, 2>> &edges);
+DLL_EXPORT PolyCurveNetwork* createCurveNetwork(std::vector<std::array<double, 3>> &positions, std::vector<std::array<size_t, 2>> &edges);
 
 // Arguments:
 // curve - pointer to the PolyCurveNetwork that you want the BVH to be built from
 // Returns:
 // a pointer to a new BVH, which can be used to evaluate energy and gradient with Barnes-Hut.
-__attribute__ ((visibility ("default")))
-BVHNode3D* createBVHForEnergy(PolyCurveNetwork *curve);
+DLL_EXPORT BVHNode3D* createBVHForEnergy(PolyCurveNetwork *curve);
 
 // Arguments:
 // curve - pointer to the PolyCurveNetwork that you want the BVH to be built from
@@ -29,8 +37,7 @@ BVHNode3D* createBVHForEnergy(PolyCurveNetwork *curve);
 // alpha, beta - parameters for the exponents of the tangent-point energy.
 // Returns:
 // a pointer to the new BlockClusterTree.
-__attribute__ ((visibility ("default")))
-BlockClusterTree* createBlockClusterTree(PolyCurveNetwork *curve, double sep, double alpha, double beta);
+DLL_EXPORT BlockClusterTree* createBlockClusterTree(PolyCurveNetwork *curve, double sep, double alpha, double beta);
 
 // Arguments:
 // tree - a pointer to the BlockClusterTree that you are using to multiply the metric
@@ -38,8 +45,7 @@ BlockClusterTree* createBlockClusterTree(PolyCurveNetwork *curve, double sep, do
 // output - a vector of length m, where the result of the product will be written
 // Returns:
 // nothing, but the product will be written into the vector "output".
-__attribute__ ((visibility ("default")))
-void multiplyMetricWithVector(BlockClusterTree* tree, std::vector<double> &vec, std::vector<double> &output);
+DLL_EXPORT void multiplyMetricWithVector(BlockClusterTree* tree, std::vector<double> &vec, std::vector<double> &output);
 
 // Arguments:
 // curve - pointer to the PolyCurveNetwork that you want to compute the energy of
@@ -47,8 +53,7 @@ void multiplyMetricWithVector(BlockClusterTree* tree, std::vector<double> &vec, 
 // alpha, beta - parameters for the exponents of the tangent-point energy.
 // Returns:
 // the value of the tangent-point energy on the curve. 
-__attribute__ ((visibility ("default")))
-double evaluateEnergy(PolyCurveNetwork* curve, BVHNode3D *root, double alpha, double beta);
+DLL_EXPORT double evaluateEnergy(PolyCurveNetwork* curve, BVHNode3D *root, double alpha, double beta);
 
 // Arguments:
 // curve - pointer to the PolyCurveNetwork that you want to compute the energy of
@@ -57,7 +62,6 @@ double evaluateEnergy(PolyCurveNetwork* curve, BVHNode3D *root, double alpha, do
 // alpha, beta - parameters for the exponents of the tangent-point energy.
 // Returns:
 // nothing, but the gradient will be written into the vector "out".
-__attribute__ ((visibility ("default")))
-void evaluateGradient(PolyCurveNetwork* curve, BVHNode3D *root, std::vector<std::array<double, 3>> &out, double alpha, double beta);
+DLL_EXPORT void evaluateGradient(PolyCurveNetwork* curve, BVHNode3D *root, std::vector<std::array<double, 3>> &out, double alpha, double beta);
 
 }
