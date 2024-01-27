@@ -4,6 +4,8 @@
 
 #include "circle_search.h"
 
+#include <cmath>
+
 namespace LWS {
 
     TPEFlowSolverSC::TPEFlowSolverSC(PolyCurveNetwork* g, double a, double b) : constraint(g)
@@ -587,7 +589,7 @@ namespace LWS {
         long project_end = Utils::currentTimeMilliseconds();
 
         std::cout << "  Sobolev gradient norm = " << soboDot << std::endl;
-        if (__isnan(soboDot)) {
+        if (std::isnan(soboDot)) {
             std::cout << "Sobolev projection produced NaN; aborting." << std::endl;
             return false;
         }

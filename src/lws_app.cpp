@@ -30,6 +30,9 @@
 #include <fstream>
 #include <queue>
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "marchingcubes/CIsoSurface.h"
 
 #include "curve_io.h"
